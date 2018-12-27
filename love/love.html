@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+
+<html>
+<script src="http://www.zaiyiqiba.com/js/clipboard.js"></script>
+<script>
+    var clipboard = new ClipboardJS('.fuzhitkl');
+
+    clipboard.on('success', function (e) {
+        console.log(e);
+    });
+
+    clipboard.on('error', function (e) {
+        console.log(e);
+    });
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <style type="text/css" abt="234"></style>
+    <script>
+    doAdblock();
+    function doAdblock() {
+        (function () {
+            function A() {
+            }
+
+            A.prototype = {
+                rules: {
+                    '17173_in': {
+                        'find': /http:\/\/f\.v\.17173cdn\.com\/(\d+\/)?flash\/PreloaderFile(Customer)?\.swf/,
+                        'replace': "http://swf.adtchrome.com/17173_in_20150522.swf"
+                    },
+                    '17173_out': {
+                        'find': /http:\/\/f\.v\.17173cdn\.com\/(\d+\/)?flash\/PreloaderFileFirstpage\.swf/,
+                        'replace': "http://swf.adtchrome.com/17173_out_20150522.swf"
+                    },
+                    '17173_live': {
+                        'find': /http:\/\/f\.v\.17173cdn\.com\/(\d+\/)?flash\/Player_stream(_firstpage)?\.swf/,
+                        'replace': "http://swf.adtchrome.com/17173_stream_20150522.swf"
+                    },
+                    '17173_live_out': {
+                        'find': /http:\/\/f\.v\.17173cdn\.com\/(\d+\/)?flash\/Player_stream_(custom)?Out\.swf/,
+                        'replace': "http://swf.adtchrome.com/17173.out.Live.swf"
+                    }
+                },
+                _done: null,
+                get done() {
+                    if (!this._done) {
+                        this._done = new Array();
+                    }
+                    return this._done;
+                },
+                addAnimations: function () {
+                    var style = document.createElement('style');
+                    style.type = 'text/css';
+                    style.innerHTML = 'object,embed{\
+                -webkit-animation-duration:.001s;-webkit-animation-name:playerInserted;\
+                -ms-animation-duration:.001s;-ms-animation-name:playerInserted;\
+                -o-animation-duration:.001s;-o-animation-name:playerInserted;\
+                animation-duration:.001s;animation-name:playerInserted;}\
+                @-webkit-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}\
+                @-ms-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}\
+                @-o-keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}\
+                @keyframes playerInserted{from{opacity:0.99;}to{opacity:1;}}';
+                    document.getElementsByTagName('head')[0].appendChild(style);
+                },
+                animationsHandler: function (e) {
+                    if (e.animationName === 'playerInserted') {
+                        this.replace(e.target);
+                    }
+                },
+                replace: function (elem) {
+                    if (this.done.indexOf(elem) != -1) return;
+                    this.done.push(elem);
+                    var player = elem.data || elem.src;
+                    if (!player) return;
+                    var i, find, replace = false;
+                    for (i in this.rules) {
+                        find = this.rules[i]['find'];
+                        if (find.test(player)) {
+                            replace = this.rules[i]['replace'];
+                            if ('function' === typeof this.rules[i]['preHandle']) {
+                                this.rules[i]['preHandle'].bind(this, elem, find, replace, player)();
+                            } else {
+                                this.reallyReplace.bind(this, elem, find, replace)();
+                            }
+                            break;
+                        }
+                    }
+                },
+                reallyReplace: function (elem, find, replace) {
+                    elem.data && (elem.data = elem.data.replace(find, replace)) || elem.src && ((elem.src = elem.src.replace(find, replace)) && (elem.style.display = 'block'));
+                    var b = elem.querySelector("param[name='movie']");
+                    this.reloadPlugin(elem);
+                },
+                reloadPlugin: function (elem) {
+                    var nextSibling = elem.nextSibling;
+                    var parentNode = elem.parentNode;
+                    parentNode.removeChild(elem);
+                    var newElem = elem.cloneNode(true);
+                    this.done.push(newElem);
+                    if (nextSibling) {
+                        parentNode.insertBefore(newElem, nextSibling);
+                    } else {
+                        parentNode.appendChild(newElem);
+                    }
+                },
+                init: function () {
+                    var handler = this.animationsHandler.bind(this);
+                    document.body.addEventListener('webkitAnimationStart', handler, false);
+                    document.body.addEventListener('msAnimationStart', handler, false);
+                    document.body.addEventListener('oAnimationStart', handler, false);
+                    document.body.addEventListener('animationstart', handler, false);
+                    this.addAnimations();
+                }
+            };
+            new A().init();
+        })();
+    }
+
+    if (document.URL.indexOf('www.baidu.com') >= 0) {
+        if (document && document.getElementsByTagName && document.getElementById && document.body) {
+            var aa = function () {
+                var all = document.body.querySelectorAll("#content_left div,#content_left table");
+                for (var i = 0; i < all.length; i++) {
+                    if (/display:\s?(table|block)\s!important/.test(all[i].getAttribute("style"))) {
+                        all[i].style.display = "none";
+                        all[i].style.visibility = 'hidden';
+                    }
+                }
+                all = document.body.querySelectorAll('.result.c-container[id="1"]');
+                //if(all.length == 1) return;
+                for (var i = 0; i < all.length; i++) {
+                    if (all[i].innerHTML && all[i].innerHTML.indexOf('广告') > -1) {
+                        all[i].style.display = "none";
+                        all[i].style.visibility = 'hidden';
+                    }
+                }
+            }
+            aa();
+            document.getElementById('wrapper_wrapper').addEventListener('DOMSubtreeModified', aa)
+        }
+        ;
+    }
+    //remove sohu video ad
+    if (document.URL.indexOf("tv.sohu.com") >= 0) {
+        if (document.cookie.indexOf("fee_status=true") == -1) {
+            document.cookie = 'fee_status=true'
+        }
+        ;
+    }
+    //remove 56.com video ad
+    if (document.URL.indexOf("56.com") >= 0) {
+        if (document.cookie.indexOf("fee_status=true") == -1) {
+            document.cookie = 'fee_status=true'
+        }
+        ;
+    }
+    //fore iqiyi enable html5 player function
+    if (document.URL.indexOf("iqiyi.com") >= 0) {
+        if (document.cookie.indexOf("player_forcedType=h5_VOD") == -1) {
+            document.cookie = 'player_forcedType=h5_VOD'
+            if (localStorage.reloadTime && Date.now() - parseInt(localStorage.reloadTime) < 60000) {
+                console.log('no reload')
+            } else {
+                location.reload()
+                localStorage.reloadTime = Date.now();
+            }
+        }
+    }
+    </script>
+    <style type="text/css">object, embed {
+        -webkit-animation-duration: .001s;
+        -webkit-animation-name: playerInserted;
+        -ms-animation-duration: .001s;
+        -ms-animation-name: playerInserted;
+        -o-animation-duration: .001s;
+        -o-animation-name: playerInserted;
+        animation-duration: .001s;
+        animation-name: playerInserted;
+    }
+
+    @-webkit-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @-ms-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @-o-keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes playerInserted {
+        from {
+            opacity: 0.99;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    @font-face {
+        font-family: 'Kristi';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Kristi Regular'), local('Kristi-Regular'), url('eboxo6ooarykmrxohixatw.ttf') format('truetype');
+    }
+    @font-face {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 100;
+        src: local('Lato Hairline'), local('Lato-Hairline'), url('zjy4gsxbiso5l7tnutxfng.ttf') format('truetype');
+    }
+
+    @font-face {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 300;
+        src: local('Lato Light'), local('Lato-Light'), url('nj47maze0myuiysgfn0wpq.ttf') format('truetype');
+    }
+    @font-face {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Lato Regular'), local('Lato-Regular'), url('v0sdcgfal2aezm9vq_aftq.ttf') format('truetype');
+    }
+    @font-face {
+        font-family: 'Lato';
+        font-style: normal;
+        font-weight: 700;
+        src: local('Lato Bold'), local('Lato-Bold'), url('dvlfbscy1r-fmtzsyiyoyw.ttf') format('truetype');
+    }
+    </style>
+</head>
+<body>
+
+
+<script src="http://www.zaiyiqiba.com/js/clipboard.js"></script>
+<script>
+    var clipboard = new ClipboardJS('.fuzhitkl');
+
+    clipboard.on('success', function (e) {
+        console.log(e);
+    });
+
+    clipboard.on('error', function (e) {
+        console.log(e);
+    });
+</script>
+
+
+<meta charset="utf-8">
+<title>只属于你的网址</title>
+<meta name="description" content="我们的相遇是意外的，但这是一个美丽幸福的意外，让我遇到了这么好的你">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="http://w3.zaiyiqiba.com/showlist/ide/css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+<link href="http://w3.zaiyiqiba.com/showlist/ide/css/base.css" rel="stylesheet" type="text/css" media="all">
+<link href="http://w3.zaiyiqiba.com/showlist/ide/css/main.css" rel="stylesheet" type="text/css" media="all">
+<link href="http://w3.zaiyiqiba.com/showlist/ide/css/venobox.css" rel="stylesheet" type="text/css" media="all">
+<link href="http://w3.zaiyiqiba.com/showlist/ide/css/fonts.css" rel="stylesheet" type="text/css" media="all">
+
+
+
+<div class="loader" style="display: none;">
+    <div class="loader-inner" style="display: none;">
+        <svg width="120" height="220" viewBox="0 0 100 100" class="loading-spinner" version="1.1"
+             xmlns="http://www.w3.org/2000/svg">
+            <circle class="spinner" cx="50" cy="50" r="21" fill="#ffffff" stroke-width="2"></circle>
+        </svg>
+    </div>
+</div>
+<!--style="display: none;"-->
+<div class="wrapper">
+    <section class="hero overlay">
+        <div class="background-img" style="background: url('bg.png');">
+            <img src="bg.png" alt="">
+        </div>
+        <header class="header default" style="display: block;">
+            <div class=" left-part">
+                <a class="logo scroll" href="#hero">
+                    <h2>LOVE</h2>
+                </a>
+            </div>
+            <div class="right-part">
+                <nav class="main-nav">
+                    <div class="toggle-mobile-but">
+                        <a href="#" class="mobile-but">
+                            <div class="lines"></div>
+                        </a>
+                    </div>
+                    <ul>
+                        <li><a class="scroll" href="#home">爱的首页</a></li>
+                        <li><a class="scroll" href="#story">爱的故事</a></li>
+                        <li><a class="scroll" href="#album">爱的相册</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <div class="inner-hero">
+            <div class="container hero-content">
+                <div class="row">
+                    <div class="col-sm-12 text-center">
+                        <h1 class="large mb-20">i love you</h1>
+                        <div class="block-date-hero">
+                            <div class="circle-dashed bg-n">
+                                <div class="round-circle">
+                                    <svg viewBox="0 0 103 103" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                         class="dashed-border">
+                                        <circle cx="50%" cy="50%" r="50"></circle>
+                                    </svg>
+                                    <i class="icon-heart"></i>
+                                </div>
+                            </div>
+                            <ul>
+                                <li>张  炜</li>
+                                <li>鲁昕妍</li>
+                            </ul>
+                        </div>
+                        <p class="mt-20 lead"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="story" class="story pt-120 pb-120">
+        <svg class="section-dashed" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="50px" height="578px" xml:space="preserve">
+               <path class="dashed-line" stroke-width="1" d="M30 0 v600 400"></path>
+            </svg>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center mb-100">
+                    <h1 class="title">Our love story</h1>
+                    <p>The Story of our love</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4 col-sm-8 col-sm-offset-2 text-center mb-30">
+                    <h2 class="heavy">这就是我们的爱情故事<br><span>同一个愿望,相爱.我爱你,至死不渝</span><span>余生请多指教</span></h2>
+                </div>
+            </div>
+            <div class="row story-row mt-100 mb-100">
+                <div class="circle-dashed timeline bg">
+                    <div class="round-circle bg before">
+                        <svg viewBox="0 0 103 103" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                             class="dashed-border">
+                            <circle cx="50%" cy="50%" r="50"></circle>
+                        </svg>
+                        <i class="icon-heart"></i>
+                    </div>
+                </div>
+                <div class="col-sm-5 ">
+                    <div class="couple-story text-right">
+                        <p>17年平安夜你送了我你亲手折的花花，又拒绝了一位向你表白的男孩子。</p>
+                    </div>
+                </div>
+                <div class="col-sm-5 col-sm-offset-2">
+                    <div class="couple-story">
+                        <p>我脾气不好，老是闹脾气，你从一开始的生气，到现在的了解理解。mua~</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row story-row mt-100 mb-80 ">
+                <div class="circle-dashed timeline bg green">
+                    <div class="round-circle  green before">
+                        <svg viewBox="0 0 103 103" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                             class="dashed-border">
+                            <circle cx="50%" cy="50%" r="50"></circle>
+                        </svg>
+                        <i class="icon-heart"></i>
+                    </div>
+                </div>
+                <div class="col-sm-5 ">
+                    <div class="couple-story text-right">
+                        <p>回想起我第一次当着你哭竟然是因为没钱买KFC了，本来从来不会在吃上省钱的我也慢慢没什么追求了，不愿意花很多钱在自己身上，给你买东西却不犹豫。</p>
+                    </div>
+                </div>
+                <div class="col-sm-5 col-sm-offset-2">
+                    <div class="couple-story">
+                        <p>不知不觉就一周年了，感谢这一年的理解和照顾，我们还要一起过好多好多的周年庆，嘻嘻嘻</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12  text-center mt-100">
+                    <a href="#" class="but">
+                        <span>Home</span>
+                        <svg class="but-svg" width="175" height="50" viewBox="0 0 415 120"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <rect class="but-rect" x="10" y="10" width="400" height="100" rx="6" ry="6"></rect>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="date pt-150 pb-150 overlay">
+        <div class="background-img" style="background: url('http://www.zaiyiqiba.com/showlist/ide/picture/4.jpg');">
+            <img src="" alt="" style="display: none;">
+        </div>
+        <div class="container">
+            <div class="row">
+                <h2 class="indent">Wedding date</h2>
+                <div class="col-sm-12 text-center">
+                    <div class="block-content front-p">
+                        <h2 class="typo">Save the date</h2>
+                        <span id="elapseClock" class="text-white" style="font-size: 45px;font-weight: 300;"><span
+                                class="digit">NaN</span> days <span class="digit">NaN</span> hours <span class="digit">NaN</span> minutes <span
+                                class="digit">NaN</span> seconds</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="album" class="album bg-grey pt-120 pb-120">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center mb-100">
+                    <h1 class="title">爱的相册</h1>
+                    <p>Main ceremony</p>
+                </div>
+            </div>
+            <div class="row mb-30">
+                <h2 class="indent">Photo album</h2>
+                <div class="col-md-4 col-sm-4 col-xs-12 ">
+                    <div class="block-img">
+                        <a href="" class="venobox vbox-item">
+                            <div class="background-img" style="background: url('1.jpg');">
+                                <img alt="" src="" style="display: none;">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12 ">
+                    <div class="block-img">
+                        <a href="" class="venobox vbox-item">
+                            <div class="background-img" style="background: url('2.jpg');">
+                                <img alt="" src="" style="display: none;">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12 ">
+                    <div class="block-img">
+                        <a href="" class="venobox vbox-item">
+                            <div class="background-img" style="background: url('4.JPG');">
+                                <img alt="" src="" style="display: none;">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12 ">
+                    <div class="block-img">
+                        <a href="" class="venobox vbox-item">
+                            <div class="background-img" style="background: url('6.JPG');">
+                                <img alt="" src="" style="display: none;">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12 ">
+                    <div class="block-img">
+                        <a href="" class="venobox vbox-item">
+                            <div class="background-img" style="background: url('3.jpg');">
+                                <img alt="" src="" style="display: none;">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-4 col-xs-12 ">
+                    <div class="block-img">
+                        <a href="" class="venobox vbox-item">
+                            <div class="background-img" style="background: url('5.jpg');">
+                                <img alt="" src="" style="display: none;">
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="just-married pt-200 pb-200 overlay">
+        <div class="background-img" style="background: url('bg2.jpg')">
+            <img src="" alt="" style="display: none;">
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <div class="block-content front-p">
+                        <h2 class="typo">❤</h2>
+                        <h2 class="heavy uppercase mt-10 light">执子之手,与子携老</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer pt-70 pb-70">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <p class="uppercase heavy normal">© 2018 love. 张  炜 &amp; 鲁昕妍</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+<script src="http://code.jquery.com/jquery-1.12.4.js" type="text/javascript"></script>
+<script src="https://cdn.bootcss.com/jquery.countdown/2.2.0/jquery.countdown.min.js" type="text/javascript"></script>
+<script src="https://cdn.bootcss.com/venobox/1.8.5/venobox.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery-smooth-scroll/2.2.0/jquery.smooth-scroll.min.js" type="text/javascript"></script>
+<script src="https://cdn.bootcss.com/script.js/2.5.9/script.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+    function timeElapse(c) {
+        var e = new Date();
+        var f = (Date.parse(e) - Date.parse(c)) / 1000;
+        var g = Math.floor(f / (3600 * 24));
+        f = f % (3600 * 24);
+        var b = Math.floor(f / 3600);
+        if (b < 10) {
+            b = "0" + b
+        }
+        f = f % 3600;
+        var d = Math.floor(f / 60);
+        if (d < 10) {
+            d = "0" + d
+        }
+        f = f % 60;
+        if (f < 10) {
+            f = "0" + f
+        }
+        var a = '<span class="digit">' + g + '</span> days <span class="digit">' + b + '</span> hours <span class="digit">' + d + '</span> minutes <span class="digit">' + f + "</span> seconds";
+        $("#elapseClock").html(a)
+    };
+    var strs = "2017/12/29 23:59:00";
+    var together = new Date(strs);
+    timeElapse(together);
+    setInterval(function () {
+        timeElapse(together);
+    }, 500);
+
+
+</script>
+
+
+<div style="position:absolute; top:50px; right:50px;">
+    <audio id="main_audio" autoplay="autoplay" preload="auto" loop="">
+        <source src="http://www.zaiyiqiba.com/mp3/kgmp3.php?id=A146C9368D819BF4C71C27D92E9EC458" type="audio/mpeg">
+    </audio>
+    <a class="c-white fs-12 icon-play rotate" id="btn-play" href="javascript:void(0);"></a>
+</div>
+<script type="text/javascript">
+    //获取picid函数
+    $(function () {
+        $("area").click(function () {
+            var picId = $(this).attr("data-id");
+            var picSrc = "images/img_big/" + picId + ".jpg"
+            $(".modal-content>.pic-box>img").attr("src", picSrc);
+        })
+        var isPlaying = function (audio) {
+            return !audio.paused;
+        }
+        var a = document.getElementById('main_audio');
+        $('#btn-play').on('click', function () {
+            if ($(this).hasClass('rotate')) {
+                a.pause();
+                $(this).removeClass('rotate');
+            } else {
+                a.play();
+                $(this).addClass('rotate');
+            }
+        });
+
+    })
+</script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script>
+    function autoPlayAudio1() {
+        wx.config({
+            // 配置信息, 即使不正确也能使用 wx.ready
+            debug: false,
+            appId: '',
+            timestamp: 1,
+            nonceStr: '',
+            signature: '',
+            jsApiList: []
+        });
+        wx.ready(function () {
+            document.getElementById('main_audio').play();
+        });
+    }
+
+    autoPlayAudio1(); // 推荐使用方法1
+</script>
+
+
+</body>
+</html>
+
